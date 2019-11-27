@@ -41,7 +41,7 @@ database, create a model, and then do a query.
 ### Connecting to the Database
 
 Once we've installed PeeWee, we need to install the Python PostgreSQL driver
-(`psychopg2`). Both are already in the [`Pipfile`](./lib/Pipfile) inside the of
+(`psycopg2`). Both are already in the [`Pipfile`](./lib/Pipfile) inside the of
 `lib/`.
 
 Once everything is installed, we need to import PeeWee and set up our database
