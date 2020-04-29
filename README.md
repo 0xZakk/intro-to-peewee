@@ -35,6 +35,9 @@ There are three key things we'll use PeeWee for:
 
 ## I Do: Quickstart
 
+From the `root directory` cd into the `lib` dir and run `pipenv install peewee`. 
+**Be sure to be inside if the `lib` directory**
+
 I'll walk through a quick setup of PeeWee, showing you how to connect to a
 database, create a model, and then do a query.
 
