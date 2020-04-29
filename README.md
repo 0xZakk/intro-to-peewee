@@ -42,6 +42,9 @@ From the `root directory` cd into the `lib` dir and run
 
 **Be sure to be inside if the `lib` directory**
 
+Go ahead and start your virtaual environment with the command:
+`pipenv shell`
+
 I'll walk through a quick setup of PeeWee, showing you how to connect to a
 database, create a model, and then do a query.
 
