@@ -35,15 +35,19 @@ There are three key things we'll use PeeWee for:
 
 ## I Do: Quickstart
 
-From the `root directory` cd into the `lib` dir and run 
-
-`pipenv install peewee psycopg2 autopep8`. 
-
-
-**Be sure to be inside if the `lib` directory**
-
-Go ahead and start your virtaual environment with the command:
-`pipenv shell`
+1. Fork and Clone this repo
+2. `cd` into the `lib` dir
+3. Run `pipenv install peewee psycopg2 autopep8`
+   * This command will create a `Pipfile` and `Pipfile.lock` file inside the lib folder; you should see all your `packages` listed inside the `Pipfile` file.
+4. Start your virtual environment: `pipenv shell`
+    * Your terminal should change from something like this:
+        ```bash
+            Rogers-MBP-2:lib roger$
+        ```
+    * To something like this:
+        ```bash
+            (lib) bash-3.2$
+        ```
 
 I'll walk through a quick setup of PeeWee, showing you how to connect to a
 database, create a model, and then do a query.
@@ -69,7 +73,7 @@ db.connect()
 In the above snippet of code we are:
 
 1. Importing `peewee`
-1. Using the `PostgresqlDatabase` class to create a database connection, passing
+1. Using the `PostgreqlDatabase` class to create a database connection, passing
    in the name of the database, the user, the password, the host, and the port.
 1. Use `db.connect()` to actually connect to the database
 
@@ -89,10 +93,9 @@ class BaseModel(Model):
         database = db
 ```
 
-A `Meta` class is a class that describes and configures another class.
+A `Meta` class is a class that describes and configures another class. More on `Meta` classes [here](https://blog.ionelmc.ro/2015/02/09/understanding-python-metaclasses/)
 
-Now that we have our `BaseModel`, we can define our model and have it inherit
-from this `BaseModel` class:
+Now that we have our `BaseModel`, we can define our model and have it inherit from this `BaseModel` class:
 
 ```py
 class Person(BaseModel):
@@ -108,6 +111,34 @@ Once we have the model, we need to add the corresponding table to the database:
 ```py
 db.create_tables([Person])
 ```
+
+### Create a Database in psql
+In order to successfully run the code we created above you must create a Database in `psql`. This is something you are able to do via `Peewee` but for now we will create a Database through the shell.
+
+Steps:
+1. Open a separate terminal window from your virtual environment.
+2. Enter the `psql` shell by typing: `psql`
+3. Create a `Database`: `CREATE DATABASE people;`
+
+### Check Your Work
+Now to check our work we need to do the following:
+
+1. Be sure you are in your `Virtual Environment`;
+   * If you are unsure how to do this check the earlier section.
+2. Run the command: `python3 main.py`
+   * This will execute the program you have created in `main.py`; i.e. It runs your code.
+3. In a **separate terminal** access `psql`
+4. Connect to your `people` database using: `\c people`
+5. Select all records in the `Person` table: `SELCET * FROM Person`
+    * You should see the following output:
+    ```
+        id | name | birthday
+        ----+------+------------
+        1 | Zakk | 1990-11-18
+        (1 row)
+    ```
+
+
 
 ### Querying our Model
 
@@ -129,8 +160,36 @@ Define a `Pet` model with the following properties:
 - `name`, should be a `CharField()`
 - `animal_type`, should be a `CharField()`
 
-Once you've defined your model, create at least 5 instances. Be sure to call
-`.save()`!
+Once you've defined your model, create at least 5 instances. Be sure to call `.save()`!
+
+<details>
+<summary>Solution</summary>
+
+```python
+class Pet(BaseModel):
+name = CharField()
+animal_type = CharField()
+
+db.drop_tables([Pet])
+db.create_tables([Pet])
+
+velvet = Pet(name='Velvet', animal_type='Dog')
+velvet.save()
+
+chip = Pet(name='Chip', animal_type='Dog')
+chip.save()
+
+spot = Pet(name='Spot', animal_type='Cat')
+spot.save()
+
+groot = Pet(name='Groot', animal_type='Treeanoid')
+groot.save()
+
+shelly = Pet(name='Shelly', animal_type='Turtle')
+shelly.save()
+```
+</details>
+
 
 ## Reading Data
 
@@ -144,10 +203,43 @@ Person.select()
 Person.select().where(Person.birthday < date(1990, 1, 1))
 ```
 
+To have this data print in the terminal you could do something like this:
+
+```py
+grabbing_zakk = Person.get(Person.name == 'Zakk')
+print(grabbing_zakk.birthday)
+# output: 'Zakk'
+
+list_of_people = Person.select().where(Person.birthday > date(1990, 1, 1))
+print([user.birthday for user in list_of_people])
+# output: [datetime.date(1990, 11, 18), datetime.date(1990, 5, 27)]
+```
+
 ## You Do: Reading Data
 
-Use your `Pet` model to read some data from your `pets` table. Use both `.get()`
-and `.select()`.
+Use your `Pet` model to read some data from your `pets` table. Use both `.get()` and `.select()`.
+
+
+<details>
+<summary>Solution</summary>
+
+```python
+
+find_groot = Pet.get(Pet.name == 'Groot')
+print(find_groot)
+# Outputs: 1; which is the records ID
+print(find_groot.name)
+# Outputs: Groot
+print(find_groot.animal_type)
+# Outputs: Treeanoid
+
+
+list_of_pets = Pet.select().where(Pet.animal_type == 'Dog')
+print([pet.name for pet in list_of_pets])
+# Outputs: ['Velvet', 'Chip']
+```
+</details>
+
 
 ## Updating Data
 
