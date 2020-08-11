@@ -52,6 +52,15 @@ There are three key things we'll use PeeWee for:
 I'll walk through a quick setup of PeeWee, showing you how to connect to a
 database, create a model, and then do a query.
 
+### Create a Database in psql
+In order to successfully run the code we are going to create, you must create a Database in `psql`. This is something you are able to do via `Peewee` but for now we will create a Database through the shell.
+
+Steps:
+1. Open a separate terminal window from your virtual environment.
+2. Enter the `psql` shell by typing: `psql`
+3. Create a `Database`: `CREATE DATABASE people;`
+
+
 ### Connecting to the Database
 
 Once we've installed PeeWee, we need to install the Python PostgreSQL driver
@@ -112,13 +121,18 @@ Once we have the model, we need to add the corresponding table to the database:
 db.create_tables([Person])
 ```
 
-### Create a Database in psql
-In order to successfully run the code we created above you must create a Database in `psql`. This is something you are able to do via `Peewee` but for now we will create a Database through the shell.
+### Querying our Model
 
-Steps:
-1. Open a separate terminal window from your virtual environment.
-2. Enter the `psql` shell by typing: `psql`
-3. Create a `Database`: `CREATE DATABASE people;`
+The first query we'll perform is to create some records in our database. PeeWee
+makes this easy to do:
+
+```py
+zakk = Person(name='Zakk', birthday=date(1990, 11, 18))
+zakk.save()
+```
+
+Now go and check you `people` database in postgres - you should see a record
+with a name of `'Zakk'` and a birthday of `1990-11-18`.
 
 ### Check Your Work
 Now to check our work we need to do the following:
@@ -137,21 +151,6 @@ Now to check our work we need to do the following:
         1 | Zakk | 1990-11-18
         (1 row)
     ```
-
-
-
-### Querying our Model
-
-The first query we'll perform is to create some records in our database. PeeWee
-makes this easy to do:
-
-```py
-zakk = Person(name='Zakk', birthday=date(1990, 11, 18))
-zakk.save()
-```
-
-Now go and check you `people` database in postgres - you should see a record
-with a name of `'Zakk'` and a birthday of `1990-11-18`.
 
 ## You Do: Define a Pet model
 
