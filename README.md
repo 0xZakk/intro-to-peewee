@@ -31,7 +31,7 @@ There are three key things we'll use PeeWee for:
 
 1. Connecting to a PSQL database from within a Python program
 1. Modeling our data
-1. Querying out database through out models
+1. Querying our database through our models
 
 ## I Do: Quickstart
 
