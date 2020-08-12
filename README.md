@@ -37,7 +37,7 @@ There are three key things we'll use PeeWee for:
 
 1. Fork and Clone this repo
 2. `cd` into the `lib` dir
-3. Run `pipenv install peewee psycopg2-binary autopep8`
+3. Run `pyenv install peewee psycopg2-binary autopep8`
    * This command will create a `Pipfile` and `Pipfile.lock` file inside the lib folder; you should see all your `packages` listed inside the `Pipfile` file.
 4. Start your virtual environment: `pipenv shell`
     * Your terminal should change from something like this:
