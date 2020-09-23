@@ -57,7 +57,7 @@ In order to successfully run the code we are going to create, you must create a 
 
 Steps:
 1. Open a separate terminal window from your virtual environment.
-2. Enter the `psql` shell by typing: `psql`
+2. Enter the `psql` shell by typing: `psql` (you may have to run `psql postgres` if you get a "database does not exist" error)
 3. Create a `Database`: `CREATE DATABASE people;`
 
 
