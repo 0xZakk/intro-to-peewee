@@ -53,13 +53,15 @@ I'll walk through a quick setup of PeeWee, showing you how to connect to a
 database, create a model, and then do a query.
 
 ### Create a Database in psql
-In order to successfully run the code we are going to create, you must create a Database in `psql`. This is something you are able to do via `Peewee` but for now we will create a Database through the shell.
+
+In order to successfully run the code we are going to create, you must create
+a Database in `psql`. This is something you are able to do via `Peewee` but for
+now we will create a Database through the shell.
 
 Steps:
 1. Open a separate terminal window from your virtual environment.
 2. Enter the `psql` shell by typing: `psql` (you may have to run `psql postgres` if you get a "database does not exist" error)
 3. Create a `Database`: `CREATE DATABASE people;`
-
 
 ### Connecting to the Database
 
@@ -70,7 +72,7 @@ Once we've installed PeeWee, we need to install the Python PostgreSQL driver
 Once everything is installed, we need to import PeeWee and set up our database
 connection. This should feel pretty similar to how we did it with Mongoose.
 
-```py
+```python
 from peewee import *
 
 db = PostgresqlDatabase('people', user='postgres', password='',
@@ -78,6 +80,8 @@ db = PostgresqlDatabase('people', user='postgres', password='',
 
 db.connect()
 ```
+
+> Note that your database settings may differ
 
 In the above snippet of code we are:
 
@@ -96,7 +100,7 @@ in (because there can be more than one).
 We're going to start by defining a `BaseModel` class that sets the database
 connection:
 
-```py
+```python
 class BaseModel(Model):
     class Meta:
         database = db
@@ -106,7 +110,7 @@ A `Meta` class is a class that describes and configures another class. More on `
 
 Now that we have our `BaseModel`, we can define our model and have it inherit from this `BaseModel` class:
 
-```py
+```python
 class Person(BaseModel):
     name = CharField()
     birthday = DateField()
@@ -117,7 +121,7 @@ class Person(BaseModel):
 
 Once we have the model, we need to add the corresponding table to the database:
 
-```py
+```python
 db.create_tables([Person])
 ```
 
@@ -126,7 +130,7 @@ db.create_tables([Person])
 The first query we'll perform is to create some records in our database. PeeWee
 makes this easy to do:
 
-```py
+```python
 zakk = Person(name='Zakk', birthday=date(1990, 11, 18))
 zakk.save()
 ```
@@ -135,6 +139,7 @@ Now go and check you `people` database in postgres - you should see a record
 with a name of `'Zakk'` and a birthday of `1990-11-18`.
 
 ### Check Your Work
+
 Now to check our work we need to do the following:
 
 1. Be sure you are in your `Virtual Environment`;
@@ -195,7 +200,7 @@ shelly.save()
 We use the `.get()` method to find a single record, otherwise we use `select()`.
 Here are a few examples:
 
-```py
+```python
 Person.get(Person.name == 'Zakk')
 Person.get(Person.birthday == date(1990, 11, 18))
 Person.select()
@@ -204,7 +209,7 @@ Person.select().where(Person.birthday < date(1990, 1, 1))
 
 To have this data print in the terminal you could do something like this:
 
-```py
+```python
 grabbing_zakk = Person.get(Person.name == 'Zakk')
 print(grabbing_zakk.birthday)
 # output: 'Zakk'
@@ -245,7 +250,7 @@ print([pet.name for pet in list_of_pets])
 The easiest way to update a record in the database is to change the value of a
 property and then call `.save()` again:
 
-```py
+```python
 zakk = Person.get(Person.name == 'Zakk')
 zakk.birthday = date(1980, 11, 18)
 zakk.save()
@@ -255,7 +260,7 @@ zakk.save()
 
 Finally, to delete data, we use the `.delete_instance()` method:
 
-```py
+```python
 zakk.delete_instance()
 ```
 
